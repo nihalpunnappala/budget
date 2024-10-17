@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #2b2b2b;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .expense-list {
+      text-align: left;
+      margin-top: 10px;
+    }
+    .expense-list p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Budget Calculator</h1>
+
+  <div class="container">
+    <input type="number" id="salary-input" placeholder="Enter your salary" />
+    <input type="text" id="expense-name" placeholder="Expense Name" />
+    <input type="number" id="expense-amount" placeholder="Expense Amount" />
+    <button onclick="addExpense()">Add Expense</button>
+
+    <div class="expense-list" id="expense-list"></div>
+
+    <button onclick="calculateBudget()">Calculate Budget</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let expenses = [];
+
+    function addExpense() {
+      const name = document.getElementById('expense-name').value;
+      const amount = parseFloat(document.getElementById('expense-amount').value);
+
+      if (name.trim() === '' || isNaN(amount) || amount <= 0) {
+        alert('Please enter valid expense name and amount.');
+        return;
+      }
+
+      expenses.push({ name, amount });
+
+      document.getElementById('expense-list').innerHTML += 
+        `<p>${name}: ₹${amount.toFixed(2)}</p>`;
+
+      // Clear the input fields
+      document.getElementById('expense-name').value = '';
+      document.getElementById('expense-amount').value = '';
+    }
+
+    function calculateBudget() {
+      const salary = parseFloat(document.getElementById('salary-input').value);
+
+      if (isNaN(salary) || salary <= 0) {
+        alert('Please enter a valid salary.');
+        return;
+      }
+
+      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const remaining = salary - totalExpenses;
+
+      document.getElementById('result').innerHTML = `
+        <h3>Budget Summary</h3>
+        <p><strong>Total Salary:</strong> ₹${salary.toFixed(2)}</p>
+        <p><strong>Total Expenses:</strong> ₹${totalExpenses.toFixed(2)}</p>
+        <p><strong>Remaining Balance:</strong> ₹${remaining.toFixed(2)}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
